@@ -1,0 +1,917 @@
+{
+	"info": {
+		"_postman_id": "happin-notifications-api",
+		"name": "Happin Notifications API",
+		"description": "Complete API collection for the Happin notifications app. Includes all endpoints for managing notifications, templates, preferences, and more.",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "happin-notifications"
+	},
+	"item": [
+		{
+			"name": "Authentication",
+			"item": [
+				{
+					"name": "Get Auth Token",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"username\": \"your_username\",\n  \"password\": \"your_password\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/accounts/login/",
+							"host": ["{{base_url}}"],
+							"path": ["api", "accounts", "login", ""]
+						},
+						"description": "Login to get authentication token. Use the token in the Authorization header for other requests."
+					},
+					"response": []
+				}
+			],
+			"description": "Authentication endpoints for getting access tokens"
+		},
+		{
+			"name": "Notification Types",
+			"item": [
+				{
+					"name": "Get All Notification Types",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Token {{auth_token}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/api/notifications/types/",
+							"host": ["{{base_url}}"],
+							"path": ["api", "notifications", "types", ""]
+						},
+						"description": "Get all available notification types (event_reminder, event_update, etc.)"
+					},
+					"response": []
+				}
+			],
+			"description": "Endpoints for retrieving notification type information"
+		},
+		{
+			"name": "Notification Priorities",
+			"item": [
+				{
+					"name": "Get All Priorities",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Token {{auth_token}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/api/notifications/priorities/",
+							"host": ["{{base_url}}"],
+							"path": ["api", "notifications", "priorities", ""]
+						},
+						"description": "Get all available notification priority levels (low, normal, high, urgent)"
+					},
+					"response": []
+				}
+			],
+			"description": "Endpoints for retrieving notification priority information"
+		},
+		{
+			"name": "Notification Statuses",
+			"item": [
+				{
+					"name": "Get All Statuses",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Token {{auth_token}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/api/notifications/statuses/",
+							"host": ["{{base_url}}"],
+							"path": ["api", "notifications", "statuses", ""]
+						},
+						"description": "Get all available notification statuses (pending, sent, delivered, read, failed)"
+					},
+					"response": []
+				}
+			],
+			"description": "Endpoints for retrieving notification status information"
+		},
+		{
+			"name": "Notification Channels",
+			"item": [
+				{
+					"name": "Get All Channels",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Token {{auth_token}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/api/notifications/channels/",
+							"host": ["{{base_url}}"],
+							"path": ["api", "notifications", "channels", ""]
+						},
+						"description": "Get all available notification channels (in_app, email, sms, push)"
+					},
+					"response": []
+				}
+			],
+			"description": "Endpoints for retrieving notification channel information"
+		},
+		{
+			"name": "Notifications",
+			"item": [
+				{
+					"name": "Get All Notifications",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Token {{auth_token}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/api/notifications/notifications/",
+							"host": ["{{base_url}}"],
+							"path": ["api", "notifications", "notifications", ""],
+							"query": [
+								{
+									"key": "page",
+									"value": "1",
+									"description": "Page number for pagination"
+								},
+								{
+									"key": "page_size",
+									"value": "20",
+									"description": "Number of items per page"
+								},
+								{
+									"key": "notification_type",
+									"value": "event_reminder",
+									"description": "Filter by notification type",
+									"disabled": true
+								},
+								{
+									"key": "status",
+									"value": "pending",
+									"description": "Filter by status",
+									"disabled": true
+								},
+								{
+									"key": "priority",
+									"value": "high",
+									"description": "Filter by priority",
+									"disabled": true
+								},
+								{
+									"key": "search",
+									"value": "event",
+									"description": "Search in title and message",
+									"disabled": true
+								},
+								{
+									"key": "ordering",
+									"value": "-created_at",
+									"description": "Order by field (prefix with - for descending)"
+								}
+							]
+						},
+						"description": "Get all notifications for the authenticated user. Supports filtering, searching, and pagination."
+					},
+					"response": []
+				},
+				{
+					"name": "Create Notification",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Token {{auth_token}}",
+								"type": "text"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"notification_type\": \"event_reminder\",\n  \"title\": \"Event Reminder\",\n  \"message\": \"Your event starts in 1 hour!\",\n  \"priority\": \"high\",\n  \"scheduled_at\": null,\n  \"metadata\": {\n    \"event_id\": 123,\n    \"event_title\": \"Summer Concert\"\n  }\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/notifications/notifications/",
+							"host": ["{{base_url}}"],
+							"path": ["api", "notifications", "notifications", ""]
+						},
+						"description": "Create a new notification. The recipient will automatically be set to the authenticated user."
+					},
+					"response": []
+				},
+				{
+					"name": "Get Notification by ID",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Token {{auth_token}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/api/notifications/notifications/{{notification_id}}/",
+							"host": ["{{base_url}}"],
+							"path": ["api", "notifications", "notifications", "{{notification_id}}", ""]
+						},
+						"description": "Get details of a specific notification by ID"
+					},
+					"response": []
+				},
+				{
+					"name": "Update Notification",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Token {{auth_token}}",
+								"type": "text"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"title\": \"Updated Event Reminder\",\n  \"message\": \"Your event starts in 30 minutes!\",\n  \"priority\": \"urgent\",\n  \"metadata\": {\n    \"event_id\": 123,\n    \"event_title\": \"Summer Concert\",\n    \"updated\": true\n  }\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/notifications/notifications/{{notification_id}}/",
+							"host": ["{{base_url}}"],
+							"path": ["api", "notifications", "notifications", "{{notification_id}}", ""]
+						},
+						"description": "Update an existing notification. Only title, message, priority, scheduled_at, and metadata can be updated."
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Notification",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Token {{auth_token}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/api/notifications/notifications/{{notification_id}}/",
+							"host": ["{{base_url}}"],
+							"path": ["api", "notifications", "notifications", "{{notification_id}}", ""]
+						},
+						"description": "Delete a specific notification"
+					},
+					"response": []
+				},
+				{
+					"name": "Mark Notification as Read",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Token {{auth_token}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/api/notifications/notifications/{{notification_id}}/mark_read/",
+							"host": ["{{base_url}}"],
+							"path": ["api", "notifications", "notifications", "{{notification_id}}", "mark_read", ""]
+						},
+						"description": "Mark a specific notification as read"
+					},
+					"response": []
+				},
+				{
+					"name": "Mark Notification as Unread",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Token {{auth_token}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/api/notifications/notifications/{{notification_id}}/mark_unread/",
+							"host": ["{{base_url}}"],
+							"path": ["api", "notifications", "notifications", "{{notification_id}}", "mark_unread", ""]
+						},
+						"description": "Mark a specific notification as unread"
+					},
+					"response": []
+				},
+				{
+					"name": "Mark All Notifications as Read",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Token {{auth_token}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/api/notifications/notifications/mark_all_read/",
+							"host": ["{{base_url}}"],
+							"path": ["api", "notifications", "notifications", "mark_all_read", ""]
+						},
+						"description": "Mark all notifications for the authenticated user as read"
+					},
+					"response": []
+				},
+				{
+					"name": "Bulk Update Notifications",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Token {{auth_token}}",
+								"type": "text"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"notification_ids\": [1, 2, 3],\n  \"action\": \"mark_read\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/notifications/notifications/bulk_update/",
+							"host": ["{{base_url}}"],
+							"path": ["api", "notifications", "notifications", "bulk_update", ""]
+						},
+						"description": "Perform bulk operations on multiple notifications. Actions: mark_read, mark_unread, delete"
+					},
+					"response": []
+				},
+				{
+					"name": "Get Unread Count",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Token {{auth_token}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/api/notifications/notifications/unread/",
+							"host": ["{{base_url}}"],
+							"path": ["api", "notifications", "notifications", "unread", ""]
+						},
+						"description": "Get the count of unread notifications for the authenticated user"
+					},
+					"response": []
+				},
+				{
+					"name": "Get Notification Statistics",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Token {{auth_token}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/api/notifications/notifications/stats/",
+							"host": ["{{base_url}}"],
+							"path": ["api", "notifications", "notifications", "stats", ""]
+						},
+						"description": "Get comprehensive statistics about notifications for the authenticated user"
+					},
+					"response": []
+				}
+			],
+			"description": "Core notification management endpoints"
+		},
+		{
+			"name": "Notification Templates",
+			"item": [
+				{
+					"name": "Get All Templates",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Token {{auth_token}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/api/notifications/templates/",
+							"host": ["{{base_url}}"],
+							"path": ["api", "notifications", "templates", ""],
+							"query": [
+								{
+									"key": "page",
+									"value": "1",
+									"description": "Page number for pagination"
+								},
+								{
+									"key": "page_size",
+									"value": "20",
+									"description": "Number of items per page"
+								},
+								{
+									"key": "notification_type",
+									"value": "event_reminder",
+									"description": "Filter by notification type",
+									"disabled": true
+								},
+								{
+									"key": "is_active",
+									"value": "true",
+									"description": "Filter by active status",
+									"disabled": true
+								},
+								{
+									"key": "search",
+									"value": "reminder",
+									"description": "Search in name, title_template, and message_template",
+									"disabled": true
+								}
+							]
+						},
+						"description": "Get all notification templates. Supports filtering and pagination."
+					},
+					"response": []
+				},
+				{
+					"name": "Create Template",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Token {{auth_token}}",
+								"type": "text"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"name\": \"Custom Event Reminder\",\n  \"notification_type\": \"event_reminder\",\n  \"title_template\": \"Reminder: {event_title}\",\n  \"message_template\": \"Your event {event_title} starts in {time_until}. Location: {event_location}\",\n  \"email_subject_template\": \"Event Reminder: {event_title}\",\n  \"email_body_template\": \"Hi {user_name},\\n\\nYour event {event_title} starts in {time_until}.\\n\\nLocation: {event_location}\\n\\nDon't forget to attend!\\n\\nBest regards,\\nThe Happin Team\",\n  \"sms_template\": \"Reminder: {event_title} starts in {time_until}. Location: {event_location}\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/notifications/templates/",
+							"host": ["{{base_url}}"],
+							"path": ["api", "notifications", "templates", ""]
+						},
+						"description": "Create a new notification template with support for multiple channels"
+					},
+					"response": []
+				},
+				{
+					"name": "Get Template by ID",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Token {{auth_token}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/api/notifications/templates/{{template_id}}/",
+							"host": ["{{base_url}}"],
+							"path": ["api", "notifications", "templates", "{{template_id}}", ""]
+						},
+						"description": "Get details of a specific template by ID"
+					},
+					"response": []
+				},
+				{
+					"name": "Update Template",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Token {{auth_token}}",
+								"type": "text"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"title_template\": \"Updated Reminder: {event_title}\",\n  \"message_template\": \"Your event {event_title} starts in {time_until}. Don't miss it!\",\n  \"is_active\": true\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/notifications/templates/{{template_id}}/",
+							"host": ["{{base_url}}"],
+							"path": ["api", "notifications", "templates", "{{template_id}}", ""]
+						},
+						"description": "Update an existing template"
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Template",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Token {{auth_token}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/api/notifications/templates/{{template_id}}/",
+							"host": ["{{base_url}}"],
+							"path": ["api", "notifications", "templates", "{{template_id}}", ""]
+						},
+						"description": "Delete a specific template"
+					},
+					"response": []
+				},
+				{
+					"name": "Get Templates by Type",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Token {{auth_token}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/api/notifications/templates/by_type/?type=event_reminder",
+							"host": ["{{base_url}}"],
+							"path": ["api", "notifications", "templates", "by_type", ""],
+							"query": [
+								{
+									"key": "type",
+									"value": "event_reminder",
+									"description": "Notification type to filter by"
+								}
+							]
+						},
+						"description": "Get templates filtered by notification type"
+					},
+					"response": []
+				}
+			],
+			"description": "Template management endpoints for creating and managing notification templates"
+		},
+		{
+			"name": "Notification Preferences",
+			"item": [
+				{
+					"name": "Get All Preferences",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Token {{auth_token}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/api/notifications/preferences/",
+							"host": ["{{base_url}}"],
+							"path": ["api", "notifications", "preferences", ""],
+							"query": [
+								{
+									"key": "page",
+									"value": "1",
+									"description": "Page number for pagination"
+								},
+								{
+									"key": "page_size",
+									"value": "20",
+									"description": "Number of items per page"
+								},
+								{
+									"key": "notification_type",
+									"value": "event_reminder",
+									"description": "Filter by notification type",
+									"disabled": true
+								}
+							]
+						},
+						"description": "Get all notification preferences for the authenticated user"
+					},
+					"response": []
+				},
+				{
+					"name": "Create Preference",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Token {{auth_token}}",
+								"type": "text"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"notification_type\": \"event_reminder\",\n  \"in_app_enabled\": true,\n  \"email_enabled\": true,\n  \"sms_enabled\": false,\n  \"push_enabled\": true\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/notifications/preferences/",
+							"host": ["{{base_url}}"],
+							"path": ["api", "notifications", "preferences", ""]
+						},
+						"description": "Create a new notification preference for a specific notification type"
+					},
+					"response": []
+				},
+				{
+					"name": "Update Preference",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Token {{auth_token}}",
+								"type": "text"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"in_app_enabled\": true,\n  \"email_enabled\": false,\n  \"sms_enabled\": true,\n  \"push_enabled\": true\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/notifications/preferences/{{preference_id}}/",
+							"host": ["{{base_url}}"],
+							"path": ["api", "notifications", "preferences", "{{preference_id}}", ""]
+						},
+						"description": "Update an existing notification preference"
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Preference",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Token {{auth_token}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/api/notifications/preferences/{{preference_id}}/",
+							"host": ["{{base_url}}"],
+							"path": ["api", "notifications", "preferences", "{{preference_id}}", ""]
+						},
+						"description": "Delete a specific notification preference"
+					},
+					"response": []
+				},
+				{
+					"name": "Get Preferences Summary",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Token {{auth_token}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/api/notifications/preferences/summary/",
+							"host": ["{{base_url}}"],
+							"path": ["api", "notifications", "preferences", "summary", ""]
+						},
+						"description": "Get a summary of all notification preferences for the authenticated user"
+					},
+					"response": []
+				},
+				{
+					"name": "Bulk Update Preferences",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Token {{auth_token}}",
+								"type": "text"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"preferences\": [\n    {\n      \"notification_type\": \"event_reminder\",\n      \"in_app_enabled\": true,\n      \"email_enabled\": false,\n      \"sms_enabled\": true,\n      \"push_enabled\": true\n    },\n    {\n      \"notification_type\": \"event_update\",\n      \"in_app_enabled\": true,\n      \"email_enabled\": true,\n      \"sms_enabled\": false,\n      \"push_enabled\": false\n    }\n  ]\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/notifications/preferences/bulk_update/",
+							"host": ["{{base_url}}"],
+							"path": ["api", "notifications", "preferences", "bulk_update", ""]
+						},
+						"description": "Update multiple notification preferences at once"
+					},
+					"response": []
+				}
+			],
+			"description": "User preference management endpoints for controlling notification delivery"
+		},
+		{
+			"name": "Notification Logs",
+			"item": [
+				{
+					"name": "Get All Logs",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Token {{auth_token}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/api/notifications/logs/",
+							"host": ["{{base_url}}"],
+							"path": ["api", "notifications", "logs", ""],
+							"query": [
+								{
+									"key": "page",
+									"value": "1",
+									"description": "Page number for pagination"
+								},
+								{
+									"key": "page_size",
+									"value": "20",
+									"description": "Number of items per page"
+								},
+								{
+									"key": "channel",
+									"value": "email",
+									"description": "Filter by delivery channel",
+									"disabled": true
+								},
+								{
+									"key": "status",
+									"value": "sent",
+									"description": "Filter by delivery status",
+									"disabled": true
+								},
+								{
+									"key": "ordering",
+									"value": "-sent_at",
+									"description": "Order by field (prefix with - for descending)"
+								}
+							]
+						},
+						"description": "Get delivery logs for notifications belonging to the authenticated user"
+					},
+					"response": []
+				},
+				{
+					"name": "Get Log by ID",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Token {{auth_token}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/api/notifications/logs/{{log_id}}/",
+							"host": ["{{base_url}}"],
+							"path": ["api", "notifications", "logs", "{{log_id}}", ""]
+						},
+						"description": "Get details of a specific delivery log by ID"
+					},
+					"response": []
+				}
+			],
+			"description": "Delivery log viewing endpoints for monitoring notification delivery status"
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					"// Set default headers for all requests",
+					"pm.request.headers.add({\n    key: 'Accept',\n    value: 'application/json'\n});"
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					"// Common test script for all requests",
+					"pm.test(\"Status code is 200 or 201\", function () {\n    pm.expect(pm.response.code).to.be.oneOf([200, 201]);\n});\n\npm.test(\"Response has JSON content\", function () {\n    pm.expect(pm.response.headers.get('Content-Type')).to.include('application/json');\n});"
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "base_url",
+			"value": "http://localhost:8000",
+			"type": "string",
+			"description": "Base URL for the Django development server"
+		},
+		{
+			"key": "auth_token",
+			"value": "your_auth_token_here",
+			"type": "string",
+			"description": "Authentication token obtained from login endpoint"
+		},
+		{
+			"key": "notification_id",
+			"value": "1",
+			"type": "string",
+			"description": "ID of a notification for testing specific endpoints"
+		},
+		{
+			"key": "template_id",
+			"value": "1",
+			"type": "string",
+			"description": "ID of a template for testing specific endpoints"
+		},
+		{
+			"key": "preference_id",
+			"value": "1",
+			"type": "string",
+			"description": "ID of a preference for testing specific endpoints"
+		},
+		{
+			"key": "log_id",
+			"value": "1",
+			"type": "string",
+			"description": "ID of a log entry for testing specific endpoints"
+		}
+	]
+}
