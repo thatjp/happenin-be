@@ -47,6 +47,7 @@ INSTALLED_APPS = [
     'apps.accounts',
     'apps.events',
     'apps.notifications',
+    'apps.scraping',
 ]
 
 MIDDLEWARE = [
