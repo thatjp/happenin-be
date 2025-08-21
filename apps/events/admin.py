@@ -17,7 +17,7 @@ class EventAdmin(admin.ModelAdmin):
     
     fieldsets = (
         ('Basic Information', {
-            'fields': ('title', 'description', 'event_type', 'icon', 'created_by')
+            'fields': ('title', 'description', 'event_type', 'icon', 'created_by', 'admins')
         }),
         ('Pricing', {
             'fields': ('price', 'is_free')

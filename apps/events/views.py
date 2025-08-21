@@ -122,8 +122,9 @@ class EventDetailView(generics.RetrieveUpdateDestroyAPIView):
     def get_queryset(self):
         """Filter events based on active status for public access"""
         if self.request.method in ['PUT', 'PATCH', 'DELETE']:
-            # Allow full access for authenticated users
-            return Event.objects.all()
+            # Restrict modifications to creator or admins
+            user = self.request.user
+            return Event.objects.filter(Q(created_by=user) | Q(admins=user)).distinct()
         else:
             # Only show active events for public access
             return Event.objects.filter(is_active=True)
@@ -135,7 +136,8 @@ class UserEventsView(generics.ListAPIView):
     permission_classes = [permissions.IsAuthenticated]
     
     def get_queryset(self):
-        return Event.objects.filter(created_by=self.request.user)
+        user = self.request.user
+        return Event.objects.filter(Q(created_by=user) | Q(admins=user)).distinct()
 
 
 class NearbyEventsView(generics.ListAPIView):
@@ -190,7 +192,7 @@ class OpenEventsView(generics.ListAPIView):
 def toggle_event_status(request, pk):
     """Toggle event open/closed status"""
     try:
-        event = Event.objects.get(pk=pk, created_by=request.user)
+        event = Event.objects.get(Q(pk=pk) & (Q(created_by=request.user) | Q(admins=request.user)))
         event.is_open = not event.is_open
         event.save()
         return Response({
@@ -209,7 +211,7 @@ def toggle_event_status(request, pk):
 def toggle_event_active(request, pk):
     """Toggle event active/inactive status"""
     try:
-        event = Event.objects.get(pk=pk, created_by=request.user)
+        event = Event.objects.get(Q(pk=pk) & (Q(created_by=request.user) | Q(admins=request.user)))
         event.is_active = not event.is_active
         event.save()
         return Response({

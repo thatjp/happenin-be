@@ -75,6 +75,12 @@ class Event(models.Model):
         related_name='created_events',
         help_text="User who created this event"
     )
+    admins = models.ManyToManyField(
+        'accounts.User',
+        blank=True,
+        related_name='admin_events',
+        help_text="Users who are admins for this event"
+    )
     
     class Meta:
         ordering = ['-start_date', '-created_at']
@@ -86,8 +92,11 @@ class Event(models.Model):
     
     @property
     def lat_lng(self):
-        """Return latitude and longitude as a tuple"""
-        return (float(self.latitude), float(self.longitude))
+        """Return latitude and longitude as a dictionary"""
+        return {
+            'latitude': float(self.latitude),
+            'longitude': float(self.longitude)
+        }
     
     @property
     def is_currently_open(self):

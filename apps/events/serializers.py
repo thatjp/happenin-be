@@ -8,6 +8,11 @@ class EventSerializer(serializers.ModelSerializer):
     is_currently_open = serializers.ReadOnlyField()
     full_address = serializers.ReadOnlyField()
     created_by = serializers.ReadOnlyField(source='created_by.username')
+    admins = serializers.SlugRelatedField(
+        many=True,
+        read_only=True,
+        slug_field='username'
+    )
     
     class Meta:
         model = Event
@@ -16,7 +21,7 @@ class EventSerializer(serializers.ModelSerializer):
             'address', 'city', 'state', 'country', 'postal_code',
             'open_time', 'close_time', 'start_date', 'end_date', 'latitude', 'longitude',
             'is_open', 'is_active', 'lat_lng', 'is_currently_open', 'full_address',
-            'created_at', 'updated_at', 'created_by'
+            'created_at', 'updated_at', 'created_by', 'admins'
         ]
         read_only_fields = ['id', 'created_at', 'updated_at', 'created_by', 'is_currently_open', 'is_free']
     
@@ -41,11 +46,16 @@ class EventSerializer(serializers.ModelSerializer):
 
 class EventCreateSerializer(serializers.ModelSerializer):
     """Serializer for creating events"""
+    admin_ids = serializers.ListField(
+        child=serializers.IntegerField(),
+        required=False,
+        help_text='List of user IDs to set as admins'
+    )
     
     class Meta:
         model = Event
         fields = [
-            'title', 'description', 'event_type', 'icon', 'price',
+            'title', 'description', 'event_type', 'icon', 'price', 'admin_ids',
             'address', 'city', 'state', 'country', 'postal_code',
             'open_time', 'close_time', 'start_date', 'end_date', 'latitude', 'longitude',
             'is_open', 'is_active'
@@ -53,17 +63,31 @@ class EventCreateSerializer(serializers.ModelSerializer):
     
     def create(self, validated_data):
         """Set the created_by field to the current user"""
-        validated_data['created_by'] = self.context['request'].user
-        return super().create(validated_data)
+        admin_ids = validated_data.pop('admin_ids', [])
+        user = self.context['request'].user
+        validated_data['created_by'] = user
+        event = super().create(validated_data)
+        # Add the creator as admin by default
+        event.admins.add(user)
+        if admin_ids:
+            from apps.accounts.models import User
+            admins = User.objects.filter(id__in=admin_ids)
+            event.admins.add(*admins)
+        return event
 
 
 class EventUpdateSerializer(serializers.ModelSerializer):
     """Serializer for updating events"""
+    admin_ids = serializers.ListField(
+        child=serializers.IntegerField(),
+        required=False,
+        help_text='List of user IDs to set as admins'
+    )
     
     class Meta:
         model = Event
         fields = [
-            'title', 'description', 'event_type', 'icon', 'price',
+            'title', 'description', 'event_type', 'icon', 'price', 'admin_ids',
             'address', 'city', 'state', 'country', 'postal_code',
             'open_time', 'close_time', 'start_date', 'end_date', 'latitude', 'longitude',
             'is_open', 'is_active'
@@ -77,6 +101,15 @@ class EventUpdateSerializer(serializers.ModelSerializer):
                 raise serializers.ValidationError("End date cannot be before start date")
         
         return attrs
+
+    def update(self, instance, validated_data):
+        admin_ids = validated_data.pop('admin_ids', None)
+        instance = super().update(instance, validated_data)
+        if admin_ids is not None:
+            from apps.accounts.models import User
+            admins = User.objects.filter(id__in=admin_ids)
+            instance.admins.set(admins)
+        return instance
 
 
 class EventListSerializer(serializers.ModelSerializer):
