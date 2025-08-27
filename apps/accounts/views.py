@@ -3,7 +3,7 @@ from rest_framework.decorators import api_view, permission_classes
 from rest_framework.response import Response
 from rest_framework.authtoken.models import Token
 from rest_framework.views import APIView
-from django.contrib.auth import authenticate, login, logout
+from django.contrib.auth import authenticate, login
 from django.contrib.auth.decorators import login_required
 from django.utils.decorators import method_decorator
 from django.views.decorators.csrf import csrf_exempt
@@ -29,6 +29,7 @@ class UserRegistrationView(generics.CreateAPIView):
         token, created = Token.objects.get_or_create(user=user)
         
         return Response({
+            'success': True,
             'message': 'User registered successfully',
             'user': UserSerializer(user).data,
             'token': token.key
@@ -50,6 +51,7 @@ class UserLoginView(APIView):
         token, created = Token.objects.get_or_create(user=user)
         
         return Response({
+            'success': True,
             'message': 'Login successful',
             'user': UserSerializer(user).data,
             'token': token.key
@@ -61,14 +63,18 @@ class UserLogoutView(APIView):
     permission_classes = [permissions.IsAuthenticated]
     
     def post(self, request):
-        # Delete auth token
+        # Delete auth token - this is all we need for token-based auth
         try:
-            request.user.auth_token.delete()
-        except:
-            pass
+            if hasattr(request.user, 'auth_token') and request.user.auth_token:
+                request.user.auth_token.delete()
+        except Exception as e:
+            # Log the error but don't fail the logout
+            print(f"Token deletion error: {e}")
         
-        logout(request)
-        return Response({'message': 'Logout successful'})
+        return Response({
+            'success': True,
+            'message': 'Logout successful'
+        })
 
 
 class UserProfileView(generics.RetrieveUpdateAPIView):
@@ -109,6 +115,7 @@ class ChangePasswordView(APIView):
         token, created = Token.objects.get_or_create(user=user)
         
         return Response({
+            'success': True,
             'message': 'Password changed successfully',
             'token': token.key
         })
@@ -121,6 +128,7 @@ class UserDashboardView(APIView):
     def get(self, request):
         user = request.user
         return Response({
+            'success': True,
             'user': UserSerializer(user).data,
             'stats': {
                 'member_since': user.date_joined,
@@ -135,8 +143,11 @@ class UserDashboardView(APIView):
 def user_list(request):
     """API view for listing users (admin only)"""
     if not request.user.is_staff:
-        return Response({'error': 'Permission denied'}, status=status.HTTP_403_FORBIDDEN)
+        return Response({'success': False, 'error': 'Permission denied'}, status=status.HTTP_403_FORBIDDEN)
     
     users = User.objects.all()
     serializer = UserSerializer(users, many=True)
-    return Response(serializer.data)
+    return Response({
+        'success': True,
+        'data': serializer.data
+    })

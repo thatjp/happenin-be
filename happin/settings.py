@@ -34,7 +34,7 @@ INSTALLED_APPS = [
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
-    'django.contrib.sessions',
+    'django.contrib.sessions',  # Required for session middleware and admin
     'django.contrib.messages',
     'django.contrib.staticfiles',
     
@@ -54,7 +54,7 @@ INSTALLED_APPS = [
 MIDDLEWARE = [
     'corsheaders.middleware.CorsMiddleware',
     'django.middleware.security.SecurityMiddleware',
-    'django.contrib.sessions.middleware.SessionMiddleware',
+    'django.contrib.sessions.middleware.SessionMiddleware',  # Required for Django admin
     'django.middleware.common.CommonMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
@@ -155,7 +155,6 @@ REST_FRAMEWORK = {
 # Disable CSRF for API-only application
 CSRF_COOKIE_SECURE = False
 CSRF_COOKIE_HTTPONLY = False
-CSRF_USE_SESSIONS = False
 
 # CORS settings for Expo development
 CORS_ALLOW_ALL_ORIGINS = True  # Allow all origins in development
@@ -179,3 +178,11 @@ CORS_ALLOW_HEADERS = [
     'x-csrftoken',
     'x-requested-with',
 ]
+
+# Session optimization for admin (minimal overhead for API)
+SESSION_ENGINE = 'django.contrib.sessions.backends.db'
+SESSION_SAVE_EVERY_REQUEST = False  # Only save when modified
+SESSION_COOKIE_AGE = 1209600  # 2 weeks
+SESSION_EXPIRE_AT_BROWSER_CLOSE = False
+SESSION_COOKIE_SECURE = False  # Set to True in production with HTTPS
+SESSION_COOKIE_HTTPONLY = True
