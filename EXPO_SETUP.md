@@ -21,13 +21,13 @@ In your Expo app, update the API base URL to use your computer's local IP with t
 const API_BASE = 'http://localhost:8000/api';
 
 // With this:
-const API_BASE = 'http://192.168.1.243:8000/api/v1';
+const API_BASE = 'http://192.168.1.202:8000/api/v1';
 ```
 
 ### 2. Network Requirements
 
 - **Same Network**: Your Expo device must be on the same WiFi network as your computer
-- **Local IP**: Use `192.168.1.243:8000` (your computer's local IP)
+- **Local IP**: Use `192.168.1.202:8000` (your computer's local IP)
 - **Port**: Make sure port 8000 is not blocked by your firewall
 
 ### 3. Testing the Connection
@@ -42,18 +42,18 @@ python test_expo_connection.py
 
 Your Expo app can now access these **v1** endpoints:
 
-- **Events**: `GET/POST http://192.168.1.243:8000/api/v1/events/`
-- **Event Details**: `GET/PUT/PATCH/DELETE http://192.168.1.243:8000/api/v1/events/{id}/`
-- **User Events**: `GET http://192.168.1.243:8000/api/v1/events/my-events/`
-- **Nearby Events**: `GET http://192.168.1.243:8000/api/v1/events/nearby/`
-- **Open Events**: `GET http://192.168.1.243:8000/api/v1/events/open/`
-- **Accounts**: `http://192.168.1.243:8000/api/v1/accounts/`
+- **Events**: `GET/POST http://192.168.1.202:8000/api/v1/events/`
+- **Event Details**: `GET/PUT/PATCH/DELETE http://192.168.1.202:8000/api/v1/events/{id}/`
+- **User Events**: `GET http://192.168.1.202:8000/api/v1/events/my-events/`
+- **Nearby Events**: `GET http://192.168.1.202:8000/api/v1/events/nearby/`
+- **Open Events**: `GET http://192.168.1.202:8000/api/v1/events/open/`
+- **Accounts**: `http://192.168.1.202:8000/api/v1/accounts/`
 
 ### Legacy Endpoints (Still Available)
 
 For backward compatibility, the old endpoints are still accessible:
-- `http://192.168.1.243:8000/api/events/`
-- `http://192.168.1.243:8000/api/accounts/`
+- `http://192.168.1.202:8000/api/events/`
+- `http://192.168.1.202:8000/api/accounts/`
 
 ## 🚨 Important Notes
 

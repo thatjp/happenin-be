@@ -7,7 +7,7 @@ import requests
 import json
 
 # Your local IP address (update this if it changes)
-LOCAL_IP = "192.168.1.243"
+LOCAL_IP = "192.168.1.202"
 API_BASE = f"http://{LOCAL_IP}:8000/api/v1"
 
 def test_expo_connection():
