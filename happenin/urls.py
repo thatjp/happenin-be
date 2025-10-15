@@ -23,7 +23,7 @@ def health(request):
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('health/', include('health_check.urls')),
+    path('health/', health),
 
     # API v1 endpoints (primary)
     path('api/v1/accounts/', include('apps.accounts.urls')),
