@@ -45,8 +45,9 @@ INSTALLED_APPS = [
     'rest_framework.authtoken',
     'django_filters',
     'corsheaders',
-    
+
     # Local apps
+    'happenin',
     'apps.accounts',
     'apps.events',
     'apps.notifications',
