@@ -49,10 +49,6 @@ coverage.xml
 .hypothesis/
 .pytest_cache/
 
-# Translations
-*.mo
-*.pot
-
 # Django stuff:
 *.log
 local_settings.py
@@ -83,7 +79,7 @@ ipython_config.py
 .python-version
 
 # pipenv
-#Pipfile.lock
+Pipfile.lock
 
 # PEP 582
 __pypackages__/
@@ -122,23 +118,7 @@ dmypy.json
 # Pyre type checker
 .pyre/
 
-# Django specific
-*.log
-local_settings.py
-db.sqlite3
-db.sqlite3-journal
-media/
-staticfiles/
-static/
-
-# Environment variables
-.env
-.env.local
-.env.development
-.env.test
-.env.production
-
-# IDE
+# IDEs
 .vscode/
 .idea/
 *.swp
@@ -147,59 +127,11 @@ static/
 
 # OS
 .DS_Store
-.DS_Store?
-._*
-.Spotlight-V100
-.Trashes
-ehthumbs.db
 Thumbs.db
 
-# Project specific
-*.sqlite3
-*.db
-logs/
-temp/
-tmp/
-
-# Twilio credentials (if stored in files)
-twilio_credentials.json
-.secrets
-
-# Backup files
-*.bak
-*.backup
-*.old
-
-# Node modules (if using any frontend tools)
-node_modules/
-npm-debug.log*
-yarn-debug.log*
-yarn-error.log*
-
-# Expo
-.expo/
-.expo-shared/
-
-# React Native
-android/app/build/
-ios/build/
-*.jks
-*.p8
-*.p12
-*.key
-*.mobileprovision
-*.orig.*
-web-build/
-
-# Metro
-.metro-health-check*
-
-# CocoaPods
-ios/Pods/
-
-# Temporary files
-*.tmp
-*.temp
+# Static files
+staticfiles/
+media/
 
 # Elastic Beanstalk Files
 .elasticbeanstalk/*
