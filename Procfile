@@ -1,1 +1,1 @@
-web: gunicorn --bind :8000 --workers 3 --threads 1 happenin.wsgi:application
+web: gunicorn happenin.wsgi:application --bind 127.0.0.1:8000
