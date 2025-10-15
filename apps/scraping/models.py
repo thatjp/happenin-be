@@ -60,7 +60,7 @@ class ScrapingTarget(models.Model):
     respect_robots_txt = models.BooleanField(default=True, help_text="Respect robots.txt file")
     user_agent = models.CharField(
         max_length=500,
-        default="Happin Scraper Bot (+https://happin.com/bot)",
+        default="happenin Scraper Bot (+https://happenin.com/bot)",
         help_text="User agent string to use for requests"
     )
     

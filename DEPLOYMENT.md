@@ -24,7 +24,7 @@ eb init
 Follow the prompts:
 - Select your AWS region
 - Select "Create new Application"
-- Application name: `happin-backend`
+- Application name: `happenin-backend`
 - Platform: Python
 - Platform branch: Python 3.9
 - Set up SSH: Yes (recommended)
@@ -32,13 +32,13 @@ Follow the prompts:
 ### 3. Create an Environment
 
 ```bash
-eb create happin-production
+eb create happenin-production
 ```
 
 Or specify more options:
 
 ```bash
-eb create happin-production \
+eb create happenin-production \
   --instance-type t2.small \
   --database \
   --database.engine postgres \
@@ -59,7 +59,7 @@ eb setenv ALLOWED_HOSTS=".elasticbeanstalk.com,.amazonaws.com"
 
 # Database (if using external RDS)
 eb setenv DB_ENGINE="django.db.backends.postgresql"
-eb setenv DB_NAME="happin_db"
+eb setenv DB_NAME="happenin_db"
 eb setenv DB_USER="your_db_user"
 eb setenv DB_PASSWORD="your_db_password"
 eb setenv DB_HOST="your-rds-endpoint.rds.amazonaws.com"
@@ -240,7 +240,7 @@ eb printenv
 To terminate your environment:
 
 ```bash
-eb terminate happin-production
+eb terminate happenin-production
 ```
 
 ## Additional Resources

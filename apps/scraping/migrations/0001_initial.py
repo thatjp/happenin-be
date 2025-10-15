@@ -27,7 +27,7 @@ class Migration(migrations.Migration):
                 ('delay_between_requests', models.PositiveIntegerField(default=5, help_text='Delay between requests in seconds', validators=[django.core.validators.MinValueValidator(1), django.core.validators.MaxValueValidator(3600)])),
                 ('max_requests_per_hour', models.PositiveIntegerField(default=100, help_text='Maximum requests per hour', validators=[django.core.validators.MinValueValidator(1), django.core.validators.MaxValueValidator(10000)])),
                 ('respect_robots_txt', models.BooleanField(default=True, help_text='Respect robots.txt file')),
-                ('user_agent', models.CharField(default='Happin Scraper Bot (+https://happin.com/bot)', help_text='User agent string to use for requests', max_length=500)),
+                ('user_agent', models.CharField(default='happenin Scraper Bot (+https://happenin.com/bot)', help_text='User agent string to use for requests', max_length=500)),
                 ('extraction_rules', models.JSONField(blank=True, default=dict, help_text='JSON configuration for data extraction')),
                 ('created_at', models.DateTimeField(auto_now_add=True)),
                 ('updated_at', models.DateTimeField(auto_now=True)),

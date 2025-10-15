@@ -1,10 +1,10 @@
 {
 	"info": {
-		"_postman_id": "happin-notifications-api",
-		"name": "Happin Notifications API",
-		"description": "Complete API collection for the Happin notifications app. Includes all endpoints for managing notifications, templates, preferences, and more.",
+		"_postman_id": "happenin-notifications-api",
+		"name": "happenin Notifications API",
+		"description": "Complete API collection for the happenin notifications app. Includes all endpoints for managing notifications, templates, preferences, and more.",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
-		"_exporter_id": "happin-notifications"
+		"_exporter_id": "happenin-notifications"
 	},
 	"item": [
 		{
@@ -501,7 +501,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n  \"name\": \"Custom Event Reminder\",\n  \"notification_type\": \"event_reminder\",\n  \"title_template\": \"Reminder: {event_title}\",\n  \"message_template\": \"Your event {event_title} starts in {time_until}. Location: {event_location}\",\n  \"email_subject_template\": \"Event Reminder: {event_title}\",\n  \"email_body_template\": \"Hi {user_name},\\n\\nYour event {event_title} starts in {time_until}.\\n\\nLocation: {event_location}\\n\\nDon't forget to attend!\\n\\nBest regards,\\nThe Happin Team\",\n  \"sms_template\": \"Reminder: {event_title} starts in {time_until}. Location: {event_location}\"\n}"
+							"raw": "{\n  \"name\": \"Custom Event Reminder\",\n  \"notification_type\": \"event_reminder\",\n  \"title_template\": \"Reminder: {event_title}\",\n  \"message_template\": \"Your event {event_title} starts in {time_until}. Location: {event_location}\",\n  \"email_subject_template\": \"Event Reminder: {event_title}\",\n  \"email_body_template\": \"Hi {user_name},\\n\\nYour event {event_title} starts in {time_until}.\\n\\nLocation: {event_location}\\n\\nDon't forget to attend!\\n\\nBest regards,\\nThe happenin Team\",\n  \"sms_template\": \"Reminder: {event_title} starts in {time_until}. Location: {event_location}\"\n}"
 						},
 						"url": {
 							"raw": "{{base_url}}/api/notifications/templates/",

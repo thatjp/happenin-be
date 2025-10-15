@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-Test script for the Happin Events API
+Test script for the happenin Events API
 """
 
 import requests
@@ -14,7 +14,7 @@ EVENTS_URL = f"{BASE_URL}/events"
 
 def test_events_api():
     """Test the events API endpoints"""
-    print("🧪 Testing Happin Events API\n")
+    print("🧪 Testing happenin Events API\n")
     
     # First, we need to create a user and get a token
     print("1. Creating test user for events...")

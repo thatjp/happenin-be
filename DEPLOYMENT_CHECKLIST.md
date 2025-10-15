@@ -48,7 +48,7 @@
 
 3. **Create Environment**
    ```bash
-   eb create happin-production
+   eb create happenin-production
    ```
 
 4. **Set Environment Variables**

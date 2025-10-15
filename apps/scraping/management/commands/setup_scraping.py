@@ -92,7 +92,7 @@ class Command(BaseCommand):
                     'delay_between_requests': 5,
                     'max_requests_per_hour': 50,
                     'respect_robots_txt': True,
-                    'user_agent': 'Happin News Scraper (+https://happin.com/bot)',
+                    'user_agent': 'happenin News Scraper (+https://happenin.com/bot)',
                     'created_by': user,
                 }
             )
@@ -115,7 +115,7 @@ class Command(BaseCommand):
                     'delay_between_requests': 10,
                     'max_requests_per_hour': 30,
                     'respect_robots_txt': True,
-                    'user_agent': 'Happin E-commerce Scraper (+https://happin.com/bot)',
+                    'user_agent': 'happenin E-commerce Scraper (+https://happenin.com/bot)',
                     'created_by': user,
                 }
             )
@@ -138,7 +138,7 @@ class Command(BaseCommand):
                     'delay_between_requests': 15,
                     'max_requests_per_hour': 20,
                     'respect_robots_txt': True,
-                    'user_agent': 'Happin Blog Scraper (+https://happin.com/bot)',
+                    'user_agent': 'happenin Blog Scraper (+https://happenin.com/bot)',
                     'created_by': user,
                 }
             )

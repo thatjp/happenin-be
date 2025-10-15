@@ -15,13 +15,13 @@ def is_robots_txt_allowed(url: str, user_agent: str = None) -> bool:
     
     Args:
         url: URL to check
-        user_agent: User agent string (defaults to Happin bot)
+        user_agent: User agent string (defaults to happenin bot)
     
     Returns:
         True if scraping is allowed, False otherwise
     """
     if not user_agent:
-        user_agent = "Happin Scraper Bot"
+        user_agent = "happenin Scraper Bot"
     
     try:
         # Parse URL to get robots.txt location

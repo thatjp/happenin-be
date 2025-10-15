@@ -1,5 +1,5 @@
 """
-Examples of how to integrate notifications with other apps in the Happin system.
+Examples of how to integrate notifications with other apps in the happenin system.
 
 This file demonstrates common use cases for sending notifications when certain events occur.
 """

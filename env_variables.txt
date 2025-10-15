@@ -12,7 +12,7 @@ ALLOWED_HOSTS=.elasticbeanstalk.com,.amazonaws.com,your-custom-domain.com
 # Database Configuration (PostgreSQL via RDS)
 # ============================================
 DB_ENGINE=django.db.backends.postgresql
-DB_NAME=happin_db
+DB_NAME=happenin_db
 DB_USER=dbadmin
 DB_PASSWORD=your-secure-db-password
 DB_HOST=your-rds-instance.xxxxx.us-east-1.rds.amazonaws.com
@@ -57,7 +57,7 @@ AWS_S3_REGION_NAME=us-east-1
 #   DEBUG=False \
 #   ALLOWED_HOSTS=".elasticbeanstalk.com" \
 #   DB_ENGINE="django.db.backends.postgresql" \
-#   DB_NAME="happin_db" \
+#   DB_NAME="happenin_db" \
 #   DB_USER="dbadmin" \
 #   DB_PASSWORD="secure-password" \
 #   DB_HOST="your-rds.amazonaws.com" \

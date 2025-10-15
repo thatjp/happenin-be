@@ -2,7 +2,7 @@
 
 ## 🎯 Overview
 
-I have successfully created a comprehensive notifications app for your Django Happin backend project. This app provides a robust, scalable notification system that can handle multiple channels, user preferences, templates, and various notification types.
+I have successfully created a comprehensive notifications app for your Django happenin backend project. This app provides a robust, scalable notification system that can handle multiple channels, user preferences, templates, and various notification types.
 
 ## 🏗️ Architecture
 

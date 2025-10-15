@@ -1,6 +1,6 @@
 # Environment Setup Guide
 
-This guide will help you set up environment variables for the Happin backend project.
+This guide will help you set up environment variables for the happenin backend project.
 
 ## Quick Setup
 

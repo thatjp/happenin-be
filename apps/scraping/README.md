@@ -233,7 +233,7 @@ if metrics:
 
 ### Celery Beat Schedule
 ```python
-# happin/celery.py
+# happenin/celery.py
 app.conf.beat_schedule = {
     'scrape-scheduled-targets': {
         'task': 'apps.scraping.tasks.scrape_scheduled_targets',
@@ -263,7 +263,7 @@ target.max_requests_per_hour = 100  # Max 100 requests per hour
 target.user_agent = 'My Company Bot (+https://mycompany.com/bot)'
 
 # Default user agent
-target.user_agent = 'Happin Scraper Bot (+https://happin.com/bot)'
+target.user_agent = 'happenin Scraper Bot (+https://happenin.com/bot)'
 ```
 
 ## Legal & Ethical Considerations
@@ -293,13 +293,13 @@ target.user_agent = 'Happin Scraper Bot (+https://happin.com/bot)'
 ### Health Checks
 ```bash
 # Check Celery worker status
-celery -A happin status
+celery -A happenin status
 
 # Check scheduled tasks
-celery -A happin inspect scheduled
+celery -A happenin inspect scheduled
 
 # Monitor task execution
-celery -A happin events
+celery -A happenin events
 ```
 
 ### Log Analysis
@@ -332,10 +332,10 @@ cleanup_old_data.delay(days_to_keep=30)
 #### Celery Worker Not Running
 ```bash
 # Start Celery worker
-celery -A happin worker -l info -Q scraping
+celery -A happenin worker -l info -Q scraping
 
 # Start Celery Beat
-celery -A happin beat -l info
+celery -A happenin beat -l info
 ```
 
 #### Redis Connection Issues
@@ -472,7 +472,7 @@ coverage report
 
 ## License
 
-This app is part of the Happin backend system and follows the same licensing terms.
+This app is part of the happenin backend system and follows the same licensing terms.
 
 ## Support
 

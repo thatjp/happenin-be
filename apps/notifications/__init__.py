@@ -1,1 +1,1 @@
-# Notifications app for Happin backend
+# Notifications app for happenin backend

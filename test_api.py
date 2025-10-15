@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-Test script for the Happin Accounts API
+Test script for the happenin Accounts API
 """
 
 import requests
@@ -11,7 +11,7 @@ BASE_URL = "http://localhost:8000/api/accounts"
 
 def test_api():
     """Test the API endpoints"""
-    print("🧪 Testing Happin Accounts API\n")
+    print("🧪 Testing happenin Accounts API\n")
     
     # Test 1: User Registration
     print("1. Testing User Registration...")

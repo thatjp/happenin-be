@@ -19,7 +19,7 @@ class Command(BaseCommand):
             '--message',
             type=str,
             help='Test message to send',
-            default='Hello from Happin! This is a test SMS message. 🎉'
+            default='Hello from happenin! This is a test SMS message. 🎉'
         )
         parser.add_argument(
             '--config-only',

@@ -44,7 +44,7 @@ class WebScraper:
             max_retries: Maximum number of retries
             respect_robots: Whether to respect robots.txt
         """
-        self.user_agent = user_agent or "Happin Scraper Bot (+https://happin.com/bot)"
+        self.user_agent = user_agent or "happenin Scraper Bot (+https://happenin.com/bot)"
         self.delay = delay
         self.timeout = timeout
         self.max_retries = max_retries

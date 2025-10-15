@@ -13,7 +13,7 @@ from datetime import timedelta
 sys.path.append(os.path.dirname(os.path.abspath(__file__)))
 
 # Set up Django
-os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'happin.settings')
+os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'happenin.settings')
 django.setup()
 
 from django.contrib.auth import get_user_model
@@ -164,8 +164,8 @@ def test_scraping_app():
     # Additional information
     print("\n📋 Next steps:")
     print("1. Start Redis server: redis-server")
-    print("2. Start Celery worker: celery -A happin worker -l info -Q scraping")
-    print("3. Start Celery Beat: celery -A happin beat -l info")
+    print("2. Start Celery worker: celery -A happenin worker -l info -Q scraping")
+    print("3. Start Celery Beat: celery -A happenin beat -l info")
     print("4. Visit Django admin: http://localhost:8000/admin/")
     print("5. Monitor scraping jobs and data")
     

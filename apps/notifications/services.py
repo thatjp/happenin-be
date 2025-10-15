@@ -367,7 +367,7 @@ class NotificationTemplateService:
                 'title_template': 'Event Reminder: {event_title}',
                 'message_template': 'Your event "{event_title}" starts in {time_until}. Don\'t forget to attend!',
                 'email_subject_template': 'Event Reminder: {event_title}',
-                'email_body_template': 'Hi {user_name},\n\nYour event "{event_title}" starts in {time_until}.\n\nEvent Details:\n- Date: {event_date}\n- Time: {event_time}\n- Location: {event_location}\n\nDon\'t forget to attend!\n\nBest regards,\nThe Happin Team',
+                'email_body_template': 'Hi {user_name},\n\nYour event "{event_title}" starts in {time_until}.\n\nEvent Details:\n- Date: {event_date}\n- Time: {event_time}\n- Location: {event_location}\n\nDon\'t forget to attend!\n\nBest regards,\nThe happenin Team',
                 'sms_template': 'Reminder: {event_title} starts in {time_until}. Location: {event_location}'
             },
             {
@@ -376,7 +376,7 @@ class NotificationTemplateService:
                 'title_template': 'Event Updated: {event_title}',
                 'message_template': 'The event "{event_title}" has been updated. Check the details for changes.',
                 'email_subject_template': 'Event Updated: {event_title}',
-                'email_body_template': 'Hi {user_name},\n\nThe event "{event_title}" has been updated.\n\nPlease check the event details for any changes.\n\nBest regards,\nThe Happin Team',
+                'email_body_template': 'Hi {user_name},\n\nThe event "{event_title}" has been updated.\n\nPlease check the event details for any changes.\n\nBest regards,\nThe happenin Team',
                 'sms_template': 'Event "{event_title}" has been updated. Check details for changes.'
             },
             {
@@ -385,7 +385,7 @@ class NotificationTemplateService:
                 'title_template': 'Event Cancelled: {event_title}',
                 'message_template': 'The event "{event_title}" has been cancelled. We apologize for any inconvenience.',
                 'email_subject_template': 'Event Cancelled: {event_title}',
-                'email_body_template': 'Hi {user_name},\n\nWe regret to inform you that the event "{event_title}" has been cancelled.\n\nWe apologize for any inconvenience this may cause.\n\nBest regards,\nThe Happin Team',
+                'email_body_template': 'Hi {user_name},\n\nWe regret to inform you that the event "{event_title}" has been cancelled.\n\nWe apologize for any inconvenience this may cause.\n\nBest regards,\nThe happenin Team',
                 'sms_template': 'Event "{event_title}" has been cancelled. We apologize for any inconvenience.'
             },
             {
@@ -394,7 +394,7 @@ class NotificationTemplateService:
                 'title_template': 'New Event Nearby: {event_title}',
                 'message_template': 'A new event "{event_title}" has been created near you. Check it out!',
                 'email_subject_template': 'New Event Nearby: {event_title}',
-                'email_body_template': 'Hi {user_name},\n\nA new event "{event_title}" has been created near your location.\n\nEvent Details:\n- Date: {event_date}\n- Time: {event_time}\n- Location: {event_location}\n\nCheck it out and see if you\'d like to attend!\n\nBest regards,\nThe Happin Team',
+                'email_body_template': 'Hi {user_name},\n\nA new event "{event_title}" has been created near your location.\n\nEvent Details:\n- Date: {event_date}\n- Time: {event_time}\n- Location: {event_location}\n\nCheck it out and see if you\'d like to attend!\n\nBest regards,\nThe happenin Team',
                 'sms_template': 'New event "{event_title}" nearby! Date: {event_date}, Location: {event_location}'
             },
             {
@@ -403,7 +403,7 @@ class NotificationTemplateService:
                 'title_template': 'Friend Request from {sender_name}',
                 'message_template': '{sender_name} has sent you a friend request. Accept or decline?',
                 'email_subject_template': 'Friend Request from {sender_name}',
-                'email_body_template': 'Hi {user_name},\n\n{sender_name} has sent you a friend request on Happin.\n\nTo accept or decline this request, please log in to your account.\n\nBest regards,\nThe Happin Team',
+                'email_body_template': 'Hi {user_name},\n\n{sender_name} has sent you a friend request on happenin.\n\nTo accept or decline this request, please log in to your account.\n\nBest regards,\nThe happenin Team',
                 'sms_template': 'Friend request from {sender_name}. Log in to accept or decline.'
             },
             {
@@ -412,7 +412,7 @@ class NotificationTemplateService:
                 'title_template': 'System Announcement: {title}',
                 'message_template': '{message}',
                 'email_subject_template': 'System Announcement: {title}',
-                'email_body_template': 'Hi {user_name},\n\n{message}\n\nBest regards,\nThe Happin Team',
+                'email_body_template': 'Hi {user_name},\n\n{message}\n\nBest regards,\nThe happenin Team',
                 'sms_template': 'System: {title} - {message}'
             }
         ]

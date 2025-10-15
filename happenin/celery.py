@@ -3,10 +3,10 @@ from celery import Celery
 from django.conf import settings
 
 # Set the default Django settings module for the 'celery' program.
-os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'happin.settings')
+os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'happenin.settings')
 
 # Create the Celery app
-app = Celery('happin')
+app = Celery('happenin')
 
 # Using a string here means the worker doesn't have to serialize
 # the configuration object to child processes.

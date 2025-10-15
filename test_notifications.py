@@ -13,7 +13,7 @@ from datetime import timedelta
 sys.path.append(os.path.dirname(os.path.abspath(__file__)))
 
 # Set up Django
-os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'happin.settings')
+os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'happenin.settings')
 django.setup()
 
 from django.contrib.auth import get_user_model

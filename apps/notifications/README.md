@@ -1,6 +1,6 @@
 # Notifications App
 
-A comprehensive Django app for managing user notifications in the Happin backend system.
+A comprehensive Django app for managing user notifications in the happenin backend system.
 
 ## Features
 
@@ -221,4 +221,4 @@ The test suite covers:
 
 ## License
 
-This app is part of the Happin backend system and follows the same licensing terms.
+This app is part of the happenin backend system and follows the same licensing terms.
