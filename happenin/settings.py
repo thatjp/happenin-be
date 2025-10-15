@@ -90,7 +90,8 @@ WSGI_APPLICATION = 'happenin.wsgi.application'
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
 
 # Use PostgreSQL in production (RDS) and SQLite for local development
-if config('DB_ENGINE', default=''):
+DB_ENGINE = os.getenv('DB_ENGINE')
+if DB_ENGINE:
     DATABASES = {
         'default': {
             'ENGINE': config('DB_ENGINE', default='django.db.backends.postgresql'),
