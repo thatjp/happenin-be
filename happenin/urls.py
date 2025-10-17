@@ -16,14 +16,26 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.http import HttpResponse
+from django.http import JsonResponse
 from django.urls import path, include
+import os
 
 def health(request):
     return HttpResponse("OK")
 
+def debug_env(request):
+    return JsonResponse({
+        'DB_HOST': os.getenv('DB_HOST', 'NOT_SET'),
+        'DB_NAME': os.getenv('DB_NAME', 'NOT_SET'),
+        'DB_USER': os.getenv('DB_USER', 'NOT_SET'),
+        'DB_PASSWORD': '***' if os.getenv('DB_PASSWORD') else 'NOT_SET',
+        'SECRET_KEY': '***' if os.getenv('SECRET_KEY') else 'NOT_SET',
+    })
+
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('health/', health),
+    path('debug/env/', debug_env),
 
     # API v1 endpoints (primary)
     path('api/v1/accounts/', include('apps.accounts.urls')),
