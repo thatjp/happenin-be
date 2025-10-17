@@ -23,6 +23,9 @@ import os
 def health(request):
     return HttpResponse("OK")
 
+def home(request):
+    return HttpResponse("home")
+
 def debug_env(request):
     return JsonResponse({
         'DB_HOST': os.getenv('DB_HOST', 'NOT_SET'),
@@ -33,6 +36,7 @@ def debug_env(request):
     })
 
 urlpatterns = [
+    path('', home),
     path('admin/', admin.site.urls),
     path('health/', health),
     path('debug/env/', debug_env),
