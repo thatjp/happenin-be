@@ -137,3 +137,8 @@ media/
 .elasticbeanstalk/*
 !.elasticbeanstalk/*.cfg.yml
 !.elasticbeanstalk/*.global.yml
+
+# Local development scripts
+start_servers.sh
+start_servers.py
+scripts/

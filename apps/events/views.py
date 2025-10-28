@@ -9,6 +9,7 @@ from .models import Event
 from .serializers import (
     EventSerializer, EventCreateSerializer, EventUpdateSerializer, EventListSerializer
 )
+from .utils import success_response, error_response
 
 
 class EventListView(generics.ListCreateAPIView):
@@ -107,6 +108,32 @@ class EventListView(generics.ListCreateAPIView):
                 queryset = queryset.filter(is_free=True)
         
         return queryset
+    
+    def list(self, request, *args, **kwargs):
+        response = super().list(request, *args, **kwargs)
+        # Handle pagination - DRF wraps paginated results in 'results' key
+        if isinstance(response.data, dict) and 'results' in response.data:
+            # For paginated responses, preserve pagination info
+            paginated_data = {
+                'results': response.data['results'],
+                'count': response.data.get('count', len(response.data['results'])),
+                'next': response.data.get('next'),
+                'previous': response.data.get('previous')
+            }
+            return success_response(data=paginated_data)
+        # For non-paginated list responses
+        return success_response(data=response.data if isinstance(response.data, list) else [response.data])
+    
+    def create(self, request, *args, **kwargs):
+        serializer = self.get_serializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        self.perform_create(serializer)
+        headers = self.get_success_headers(serializer.data)
+        return success_response(
+            data=serializer.data,
+            message='Event created successfully',
+            status_code=status.HTTP_201_CREATED
+        )
 
 
 class EventDetailView(generics.RetrieveUpdateDestroyAPIView):
@@ -128,6 +155,29 @@ class EventDetailView(generics.RetrieveUpdateDestroyAPIView):
         else:
             # Only show active events for public access
             return Event.objects.filter(is_active=True)
+    
+    def retrieve(self, request, *args, **kwargs):
+        instance = self.get_object()
+        serializer = self.get_serializer(instance)
+        return success_response(data=serializer.data)
+    
+    def update(self, request, *args, **kwargs):
+        partial = kwargs.pop('partial', False)
+        instance = self.get_object()
+        serializer = self.get_serializer(instance, data=request.data, partial=partial)
+        serializer.is_valid(raise_exception=True)
+        self.perform_update(serializer)
+        return success_response(data=serializer.data, message='Event updated successfully')
+    
+    def partial_update(self, request, *args, **kwargs):
+        kwargs['partial'] = True
+        return self.update(request, *args, **kwargs)
+    
+    def destroy(self, request, *args, **kwargs):
+        instance = self.get_object()
+        self.perform_destroy(instance)
+        # HTTP 204 No Content should not have a body, but for consistency we use 200
+        return success_response(message='Event deleted successfully', status_code=status.HTTP_200_OK)
 
 
 class UserEventsView(generics.ListAPIView):
@@ -138,12 +188,36 @@ class UserEventsView(generics.ListAPIView):
     def get_queryset(self):
         user = self.request.user
         return Event.objects.filter(Q(created_by=user) | Q(admins=user)).distinct()
+    
+    def list(self, request, *args, **kwargs):
+        response = super().list(request, *args, **kwargs)
+        if isinstance(response.data, dict) and 'results' in response.data:
+            data = {
+                'results': response.data['results'],
+                'count': response.data.get('count', len(response.data['results'])),
+                'next': response.data.get('next'),
+                'previous': response.data.get('previous')
+            }
+            return success_response(data=data)
+        return success_response(data=response.data if isinstance(response.data, list) else [response.data])
 
 
 class NearbyEventsView(generics.ListAPIView):
     """Find events near a specific location"""
     serializer_class = EventListSerializer
     permission_classes = [permissions.AllowAny]
+    
+    def list(self, request, *args, **kwargs):
+        response = super().list(request, *args, **kwargs)
+        if isinstance(response.data, dict) and 'results' in response.data:
+            data = {
+                'results': response.data['results'],
+                'count': response.data.get('count', len(response.data['results'])),
+                'next': response.data.get('next'),
+                'previous': response.data.get('previous')
+            }
+            return success_response(data=data)
+        return success_response(data=response.data if isinstance(response.data, list) else [response.data])
     
     def get_queryset(self):
         lat = self.request.query_params.get('lat')
@@ -174,6 +248,18 @@ class OpenEventsView(generics.ListAPIView):
     serializer_class = EventListSerializer
     permission_classes = [permissions.AllowAny]
     
+    def list(self, request, *args, **kwargs):
+        response = super().list(request, *args, **kwargs)
+        if isinstance(response.data, dict) and 'results' in response.data:
+            data = {
+                'results': response.data['results'],
+                'count': response.data.get('count', len(response.data['results'])),
+                'next': response.data.get('next'),
+                'previous': response.data.get('previous')
+            }
+            return success_response(data=data)
+        return success_response(data=response.data if isinstance(response.data, list) else [response.data])
+    
     def get_queryset(self):
         now = timezone.now()
         current_time = now.time()
@@ -195,14 +281,14 @@ def toggle_event_status(request, pk):
         event = Event.objects.get(Q(pk=pk) & (Q(created_by=request.user) | Q(admins=request.user)))
         event.is_open = not event.is_open
         event.save()
-        return Response({
-            'message': f'Event {"opened" if event.is_open else "closed"} successfully',
-            'is_open': event.is_open
-        })
+        return success_response(
+            data={'is_open': event.is_open},
+            message=f'Event {"opened" if event.is_open else "closed"} successfully'
+        )
     except Event.DoesNotExist:
-        return Response(
-            {'error': 'Event not found or you do not have permission to modify it'},
-            status=status.HTTP_404_NOT_FOUND
+        return error_response(
+            'Event not found or you do not have permission to modify it',
+            status_code=status.HTTP_404_NOT_FOUND
         )
 
 
@@ -214,12 +300,12 @@ def toggle_event_active(request, pk):
         event = Event.objects.get(Q(pk=pk) & (Q(created_by=request.user) | Q(admins=request.user)))
         event.is_active = not event.is_active
         event.save()
-        return Response({
-            'message': f'Event {"activated" if event.is_active else "deactivated"} successfully',
-            'is_active': event.is_active
-        })
+        return success_response(
+            data={'is_active': event.is_active},
+            message=f'Event {"activated" if event.is_active else "deactivated"} successfully'
+        )
     except Event.DoesNotExist:
-        return Response(
-            {'error': 'Event not found or you do not have permission to modify it'},
-            status=status.HTTP_404_NOT_FOUND
+        return error_response(
+            'Event not found or you do not have permission to modify it',
+            status_code=status.HTTP_404_NOT_FOUND
         )
