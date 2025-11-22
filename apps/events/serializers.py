@@ -7,7 +7,8 @@ class EventSerializer(serializers.ModelSerializer):
     lat_lng = serializers.SerializerMethodField()
     is_currently_open = serializers.ReadOnlyField()
     full_address = serializers.ReadOnlyField()
-    created_by = serializers.ReadOnlyField(source='created_by.username')
+    created_by = serializers.SerializerMethodField()
+    created_by_id = serializers.IntegerField(source='created_by.id', read_only=True)
     admins = serializers.SlugRelatedField(
         many=True,
         read_only=True,
@@ -21,13 +22,23 @@ class EventSerializer(serializers.ModelSerializer):
             'address', 'city', 'state', 'country', 'postal_code',
             'open_time', 'close_time', 'start_date', 'end_date', 'latitude', 'longitude',
             'is_open', 'is_active', 'lat_lng', 'is_currently_open', 'full_address',
-            'created_at', 'updated_at', 'created_by', 'admins'
+            'created_at', 'updated_at', 'created_by', 'created_by_id', 'admins'
         ]
-        read_only_fields = ['id', 'created_at', 'updated_at', 'created_by', 'is_currently_open', 'is_free']
+        read_only_fields = ['id', 'created_at', 'updated_at', 'created_by', 'created_by_id', 'is_currently_open', 'is_free']
     
     def get_lat_lng(self, obj):
         """Return latitude and longitude as a tuple"""
         return obj.lat_lng
+    
+    def get_created_by(self, obj):
+        """Return created_by as an object with id and username"""
+        if obj.created_by:
+            return {
+                'id': obj.created_by.id,
+                'username': obj.created_by.username,
+                'email': obj.created_by.email
+            }
+        return None
     
     def validate(self, attrs):
         """Validate event data"""
@@ -117,6 +128,8 @@ class EventListSerializer(serializers.ModelSerializer):
     lat_lng = serializers.SerializerMethodField()
     is_currently_open = serializers.ReadOnlyField()
     full_address = serializers.ReadOnlyField()
+    created_by = serializers.SerializerMethodField()
+    created_by_id = serializers.IntegerField(source='created_by.id', read_only=True)
     
     class Meta:
         model = Event
@@ -124,9 +137,19 @@ class EventListSerializer(serializers.ModelSerializer):
             'id', 'title', 'event_type', 'icon', 'price', 'is_free', 'city', 
             'start_date', 'end_date', 'open_time', 'close_time',
             'latitude', 'longitude', 'is_open', 'is_active', 'lat_lng', 'is_currently_open',
-            'full_address'
+            'full_address', 'created_by', 'created_by_id'
         ]
     
     def get_lat_lng(self, obj):
         """Return latitude and longitude as a tuple"""
         return obj.lat_lng
+    
+    def get_created_by(self, obj):
+        """Return created_by as an object with id and username"""
+        if obj.created_by:
+            return {
+                'id': obj.created_by.id,
+                'username': obj.created_by.username,
+                'email': obj.created_by.email
+            }
+        return None

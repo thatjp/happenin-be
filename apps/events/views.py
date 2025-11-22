@@ -1,15 +1,18 @@
 from rest_framework import status, generics, permissions, filters
 from rest_framework.decorators import api_view, permission_classes
 from rest_framework.response import Response
+from rest_framework.views import APIView
 from django_filters.rest_framework import DjangoFilterBackend
 from django.db.models import Q
 from django.utils import timezone
+from django.http import Http404
 from datetime import date
 from .models import Event
 from .serializers import (
     EventSerializer, EventCreateSerializer, EventUpdateSerializer, EventListSerializer
 )
 from .utils import success_response, error_response
+from .search import search_events
 
 
 class EventListView(generics.ListCreateAPIView):
@@ -174,9 +177,23 @@ class EventDetailView(generics.RetrieveUpdateDestroyAPIView):
         return self.update(request, *args, **kwargs)
     
     def destroy(self, request, *args, **kwargs):
-        instance = self.get_object()
+        """Delete an event by ID"""
+        try:
+            instance = self.get_object()
+        except Http404:
+            # Check if event exists but user doesn't have permission
+            event_id = kwargs.get('pk')
+            if Event.objects.filter(pk=event_id).exists():
+                return error_response(
+                    'You do not have permission to delete this event. Only the event creator or admins can delete it.',
+                    status_code=status.HTTP_403_FORBIDDEN
+                )
+            return error_response(
+                'Event not found',
+                status_code=status.HTTP_404_NOT_FOUND
+            )
+        
         self.perform_destroy(instance)
-        # HTTP 204 No Content should not have a body, but for consistency we use 200
         return success_response(message='Event deleted successfully', status_code=status.HTTP_200_OK)
 
 
@@ -309,3 +326,168 @@ def toggle_event_active(request, pk):
             'Event not found or you do not have permission to modify it',
             status_code=status.HTTP_404_NOT_FOUND
         )
+
+
+class EventSearchView(APIView):
+    """
+    Elasticsearch-based search endpoint for events
+    Supports full-text search across title, description, and other fields
+    """
+    permission_classes = [permissions.AllowAny]
+    
+    def get(self, request):
+        """
+        Search events using Elasticsearch
+        
+        Query parameters:
+        - q: Search query string (full-text search)
+        - city: Filter by city
+        - state: Filter by state
+        - country: Filter by country
+        - event_type: Filter by event type
+        - is_free: Filter by free events (true/false)
+        - is_open: Filter by open events (true/false)
+        - is_active: Filter by active events (true/false)
+        - start_date_from: Filter events starting from this date (YYYY-MM-DD)
+        - start_date_to: Filter events starting until this date (YYYY-MM-DD)
+        - lat: Latitude for location-based search
+        - lng: Longitude for location-based search
+        - radius: Radius in km for location-based search (default: 50)
+        - min_price: Minimum price filter
+        - max_price: Maximum price filter
+        - sort: Sort field and direction (e.g., 'start_date:asc' or '-created_at')
+        - page: Page number (default: 1)
+        - page_size: Results per page (default: 20)
+        """
+        # Get query parameters
+        query = request.query_params.get('q', '').strip()
+        
+        # Build filters dict
+        filters = {}
+        
+        # Location filters
+        city = request.query_params.get('city')
+        if city:
+            filters['city'] = city
+        
+        state = request.query_params.get('state')
+        if state:
+            filters['state'] = state
+        
+        country = request.query_params.get('country')
+        if country:
+            filters['country'] = country
+        
+        # Event type filter
+        event_type = request.query_params.get('event_type')
+        if event_type:
+            filters['event_type'] = event_type
+        
+        # Boolean filters
+        is_free = request.query_params.get('is_free')
+        if is_free is not None:
+            filters['is_free'] = is_free.lower() == 'true'
+        
+        is_open = request.query_params.get('is_open')
+        if is_open is not None:
+            filters['is_open'] = is_open.lower() == 'true'
+        
+        is_active = request.query_params.get('is_active')
+        if is_active is not None:
+            filters['is_active'] = is_active.lower() == 'true'
+        
+        # Date filters
+        start_date_from = request.query_params.get('start_date_from')
+        if start_date_from:
+            filters['start_date_from'] = start_date_from
+        
+        start_date_to = request.query_params.get('start_date_to')
+        if start_date_to:
+            filters['start_date_to'] = start_date_to
+        
+        # Location-based search
+        lat = request.query_params.get('lat')
+        lng = request.query_params.get('lng')
+        radius = request.query_params.get('radius', '50')
+        
+        if lat and lng:
+            try:
+                filters['lat'] = float(lat)
+                filters['lng'] = float(lng)
+                filters['radius'] = float(radius)
+            except ValueError:
+                return error_response(
+                    'Invalid lat, lng, or radius parameters',
+                    status_code=status.HTTP_400_BAD_REQUEST
+                )
+        
+        # Price filters
+        min_price = request.query_params.get('min_price')
+        if min_price:
+            try:
+                filters['min_price'] = float(min_price)
+            except ValueError:
+                return error_response(
+                    'Invalid min_price parameter',
+                    status_code=status.HTTP_400_BAD_REQUEST
+                )
+        
+        max_price = request.query_params.get('max_price')
+        if max_price:
+            try:
+                filters['max_price'] = float(max_price)
+            except ValueError:
+                return error_response(
+                    'Invalid max_price parameter',
+                    status_code=status.HTTP_400_BAD_REQUEST
+                )
+        
+        # Sorting
+        sort = request.query_params.get('sort')
+        if sort:
+            # Support multiple sort fields separated by commas
+            sort = [s.strip() for s in sort.split(',')]
+        
+        # Pagination
+        try:
+            page = int(request.query_params.get('page', 1))
+            page_size = int(request.query_params.get('page_size', 20))
+            
+            # Limit page size to prevent abuse
+            if page_size > 100:
+                page_size = 100
+            if page_size < 1:
+                page_size = 20
+            
+            if page < 1:
+                page = 1
+        except ValueError:
+            return error_response(
+                'Invalid page or page_size parameters',
+                status_code=status.HTTP_400_BAD_REQUEST
+            )
+        
+        # Perform search
+        try:
+            results = search_events(
+                query=query if query else None,
+                filters=filters if filters else None,
+                sort=sort,
+                page=page,
+                page_size=page_size
+            )
+            
+            # Check if there was an error (Elasticsearch not available)
+            if 'error' in results:
+                return error_response(
+                    f'Search service temporarily unavailable: {results["error"]}',
+                    status_code=status.HTTP_503_SERVICE_UNAVAILABLE
+                )
+            
+            return success_response(data=results)
+        
+        except Exception as e:
+            return error_response(
+                f'Search error: {str(e)}',
+                status_code=status.HTTP_500_INTERNAL_SERVER_ERROR
+            )

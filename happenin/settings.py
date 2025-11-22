@@ -254,3 +254,21 @@ LOGGING = {
         },
     },
 }
+
+# Elasticsearch Configuration
+ELASTICSEARCH_DSL = {
+    'default': {
+        'hosts': os.getenv('ELASTICSEARCH_HOST', 'http://localhost:9200').split(','),
+        'use_ssl': os.getenv('ELASTICSEARCH_USE_SSL', 'False').lower() in ('true', '1', 'yes'),
+        'http_auth': (
+            os.getenv('ELASTICSEARCH_USER', ''),
+            os.getenv('ELASTICSEARCH_PASSWORD', '')
+        ) if os.getenv('ELASTICSEARCH_USER') else None,
+        'verify_certs': os.getenv('ELASTICSEARCH_VERIFY_CERTS', 'False').lower() in ('true', '1', 'yes'),
+        'ca_certs': os.getenv('ELASTICSEARCH_CA_CERTS', None),
+        'timeout': int(os.getenv('ELASTICSEARCH_TIMEOUT', '30')),
+    },
+}
+
+# Elasticsearch index names
+ELASTICSEARCH_INDEX_NAME = os.getenv('ELASTICSEARCH_INDEX_NAME', 'events')

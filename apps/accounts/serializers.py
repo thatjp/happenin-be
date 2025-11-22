@@ -14,15 +14,20 @@ class UserProfileSerializer(serializers.ModelSerializer):
 class UserSerializer(serializers.ModelSerializer):
     """Serializer for User model"""
     profile = UserProfileSerializer(read_only=True)
+    created_events = serializers.SerializerMethodField()
     
     class Meta:
         model = User
         fields = [
             'id', 'username', 'email', 'first_name', 'last_name', 
             'phone_number', 'date_of_birth', 'is_verified', 
-            'created_at', 'updated_at', 'profile'
+            'created_at', 'updated_at', 'profile', 'created_events'
         ]
-        read_only_fields = ['id', 'created_at', 'updated_at', 'is_verified']
+        read_only_fields = ['id', 'created_at', 'updated_at', 'is_verified', 'created_events']
+    
+    def get_created_events(self, obj):
+        """Return list of event IDs created by this user"""
+        return list(obj.created_events.values_list('id', flat=True))
     
 
 

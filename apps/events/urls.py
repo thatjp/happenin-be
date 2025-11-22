@@ -8,6 +8,9 @@ urlpatterns = [
     path('', views.EventListView.as_view(), name='event-list'),
     path('<int:pk>/', views.EventDetailView.as_view(), name='event-detail'),
     
+    # Search endpoint
+    path('search/', views.EventSearchView.as_view(), name='event-search'),
+    
     # User-specific endpoints
     path('my-events/', views.UserEventsView.as_view(), name='user-events'),
     

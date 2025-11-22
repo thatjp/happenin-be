@@ -26,20 +26,10 @@ def health(request):
 def home(request):
     return HttpResponse("home")
 
-def debug_env(request):
-    return JsonResponse({
-        'DB_HOST': os.getenv('DB_HOST', 'NOT_SET'),
-        'DB_NAME': os.getenv('DB_NAME', 'NOT_SET'),
-        'DB_USER': os.getenv('DB_USER', 'NOT_SET'),
-        'DB_PASSWORD': '***' if os.getenv('DB_PASSWORD') else 'NOT_SET',
-        'SECRET_KEY': '***' if os.getenv('SECRET_KEY') else 'NOT_SET',
-    })
-
 urlpatterns = [
     path('', home),
     path('admin/', admin.site.urls),
     path('health/', health),
-    path('debug/env/', debug_env),
 
     # API v1 endpoints (primary)
     path('api/v1/accounts/', include('apps.accounts.urls')),
